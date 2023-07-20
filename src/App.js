@@ -1,6 +1,6 @@
 import express from "express";
 import morgan from "morgan";
-import router from "./router/index.js";
+import controller from "./controller/index.js";
 import __dirname from "./Utils.js";
 
 const app = express();
@@ -11,6 +11,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(morgan("dev"));
 
-router(app);
+controller(app);
 
 export default app;
