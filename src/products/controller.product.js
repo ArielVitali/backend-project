@@ -9,7 +9,8 @@ const productManager = new ProductManager(path);
 controllerProduct.get("/", async (req, res) => {
   try {
     const products = await productManager.getProducts();
-    res.json(products);
+    //res.json(products);
+    res.render("home.handlebars", { products });
   } catch (error) {
     console.log(error);
   }
@@ -85,5 +86,7 @@ controllerProduct.delete("/:pid", async (req, res) => {
   const deletedProduct = await productManager.deleteProduct(parseInt(pid));
   res.json({ deletedProduct, message: `Product deleted succesfully!` });
 });
+
+controllerProduct.post("/realtimeproducts", (req, res) => {});
 
 export default controllerProduct;
