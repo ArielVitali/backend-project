@@ -19,7 +19,7 @@ class CartManager {
 
       const cart = {
         id,
-        products,
+        products: [],
       };
 
       carts.push(cart);

@@ -1,52 +1,35 @@
 [
 	{
 		"id": 2,
-		"title": "Product 2",
-		"description": "This is the description for Product 3.",
-		"code": "db9dd1b0-6d2b-4ddb-b4b3-3e7d9b1bdc9d",
-		"price": 9.99,
-		"status": true,
-		"stock": 200,
-		"category": "Clothing",
-		"thumbnails": [
-			"path/to/image5.jpg",
-			"path/to/image6.jpg"
-		]
-	},
-	{
-		"id": 3,
-		"title": "Product 3",
-		"description": "This is the description for Product 4.",
-		"code": "0d7b1b3d-2dd0-9dbb-4d7b-b4bad3b9b1de",
-		"price": 49.99,
-		"status": true,
-		"stock": 75,
-		"category": "Beauty & Personal Care",
-		"thumbnails": [
-			"path/to/image7.jpg",
-			"path/to/image8.jpg"
-		]
-	},
-	{
-		"id": 3,
-		"title": "producto 5",
-		"description": "este es prueba",
+		"title": "producto 6ww000",
+		"description": "bbbbbbbb",
 		"code": "abc123",
 		"price": 200,
 		"status": false,
 		"stock": 24,
 		"category": "Outdoors",
-		"thumbnails": []
+		"thumbnails": [
+			"ruta"
+		]
+	},
+	{
+		"id": 3,
+		"title": "das",
+		"description": "asd",
+		"code": "",
+		"price": "21",
+		"status": "",
+		"stock": "",
+		"category": ""
+	},
+	{
+		"id": 4,
+		"title": "dos",
+		"price": "12"
 	},
 	{
 		"id": 5,
-		"title": "producto 5",
-		"description": "este es prueba",
-		"code": "abc123",
-		"price": 200,
-		"status": false,
-		"stock": 24,
-		"category": "Outdoors",
-		"thumbnails": []
+		"title": "tres",
+		"price": "12"
 	}
 ]

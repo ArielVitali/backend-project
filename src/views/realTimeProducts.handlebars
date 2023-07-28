@@ -1,7 +1,92 @@
-<h1>Lista de productos</h1>
+<h1 style="margin:20px; padding:20px; color: white; ">Lista de productos en vivo</h1>
 
-<h3 id="products"></h3>
+<div class="container">
+  <h1 class="ingProds">Ingrese productos</h1>
+<div style="display: flex;" id="formulario" class="formularios">
+<form action="/api/products" method="POST" id="add" style="flex: 1;">
+<h3>Agregue un producto:</h3>
+  <div style="padding: 10px;">
+    <label for="title">Title:</label>
+    <input type="text" id="title">
+  </div>
+  <div style="padding: 10px;">
+    <label for="price">Price:</label>
+    <input type="text" id="price">
+  </div>
+  <!-- 
+  <div style="padding: 10px;">
+    <label for="description">Description:</label>
+    <input type="text" id="description">
+  </div>
+  <div style="padding: 10px;">
+    <label for="thumbnail">Thumbnail:</label>
+    <input type="text" id="thumbnail">
+  </div>
+  <div style="padding: 10px;">
+    <label for="code">Code:</label>
+    <input type="text" id="code">
+  </div>
+  <div style="padding: 10px;">
+    <label for="stock">Stock:</label>
+    <input type="text" id="stock">
+  </div>
+  <div style="padding: 10px;">
+    <label for="status">Status:</label>
+    <input type="text" id="status">
+  </div>
+  <div style="padding: 10px;">
+    <label for="category">Category:</label>
+    <input type="text" id="category">
+  </div>
+  -->
+  <button id="addProductBtn">Add Product</button>
+</form>
 
+<form id="delete" style="flex: 1; margin-left: 20px;">
+    <h3>Elimine un producto:</h3>
+  <label >Product ID:</label>
+  <input type="text" id="productId" >
+  <button id="deleteBtn">Delete Product</button>
+</form>
+</div>
 
+<div id="liveProducts" class="productList">
+  <table style="margin: 20px; padding:20px;">
+      <thead>
+        <tr>
+          <td>Nombre</td>
+          <td>Precio</td>
+          <td>id</td>
+        </tr>
+      </thead>
+        
+        {{#each products}}
+        <tr>
+          <td>
+            <h2>{{this.title}}</h2>
+          </td>
+          <td>
+            <p>{{this.price}}</p>
+          </td>
+          <td>
+            <p>{{this.id}}</p>
+          </td>
+        </tr>   
+        {{/each}}
+      </table>
+</div>
+</div>
+
+<div class="container">
+  <div class="chat">
+  <h1 class="ingProds">Centro de mensajes</h1>
+  <h3 id="messageFromServer"></h3>
+  <label for="chatBox" style="margin-left: 10px;">Escribe tu mensaje: </label>
+  <input type="text" id="chatBox" style="width: 60%; margin:10px;">
+  <h4 id="messages" style="margin: 10px; padding:10px"></h4>
+  </div>
+</div>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>
