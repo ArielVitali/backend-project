@@ -1,0 +1,55 @@
+body{
+    background-color: rgb(58, 55, 55);
+
+}
+
+.container {
+    width: 50%;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: darkgray;
+    border-radius: 20px;
+}
+
+.productList{
+    width: 50%;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    background-color: rgb(217, 187, 126);
+    border-radius: 20px;
+}
+
+.chat{
+    width: 60%;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    background-color: rgb(217, 187, 126);
+    border-radius: 20px;
+}
+
+.formularios {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    align-content: center;
+
+}
+
+.formularios label {
+    font-size: 20px;     /* Example: Set font size to 16 pixels */
+          /* Example: Set font color to dark grey */
+    line-height: 1.5; 
+}
+
+.ingProds{
+    display: flex;
+    margin: 0 auto;
+    color:blue;
+    padding: 25px;
+}

@@ -1,0 +1,34 @@
+<h1 style="margin:20px; padding:20px; color: white; ">Lista de productos en vivo</h1>
+
+
+<div class="container">
+<h1 class="ingProds">Productos</h1>
+<div id="liveProducts" class="productList">
+  <table style="margin: 20px; padding:20px;">
+      <thead>
+        <tr>
+          <td>Nombre</td>
+          <td>Precio</td>
+          <td>id</td>
+        </tr>
+      </thead>
+        
+        {{#each products}}
+        <tr>
+          <td>
+            <h2>{{this.title}}</h2>
+          </td>
+          <td>
+            <p>{{this.price}}</p>
+          </td>
+          <td>
+            <p>{{this.id}}</p>
+          </td>
+        </tr>   
+        {{/each}}
+      </table>
+</div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>

@@ -124,9 +124,9 @@ class ProductManager {
       const data = await fs.promises.readFile(this.path, "utf-8");
       const products = JSON.parse(data);
       const productIndex = products.findIndex((product) => product.id === id);
+      console.log(productIndex);
       if (productIndex !== -1) {
         const deletedProduct = products.splice(productIndex, 1)[0];
-        products.length > 0 ? (products[deletedProduct.id + 1].id -= 1) : 0;
         await fs.promises.writeFile(
           this.path,
           JSON.stringify(products, null, "\t")
