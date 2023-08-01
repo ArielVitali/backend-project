@@ -1,15 +1,15 @@
 import { Router } from "express";
-import CartManager from "../class/CartManager.js";
+import CartDao from "../dao/Cart.dao.js";
 
 const controllerCart = Router();
-const path = "./files/carts.json";
-const cartManager = new CartManager(path);
+//const path = "./files/carts.json";
+//const cartManager = new CartManager(path);
+const cartManager = new CartDao();
 
 //create cart
 controllerCart.post("/", async (req, res) => {
   const { products } = req.body;
-  console.log(products);
-  const result = await cartManager.addCart(products);
+  const result = await cartManager.createCart(products);
   res.json({ message: result });
 });
 

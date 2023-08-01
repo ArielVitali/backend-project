@@ -5,7 +5,7 @@ class CartManager {
     this.path = path;
   }
 
-  async addCart(products) {
+  async createCart(products) {
     try {
       let carts = [];
 

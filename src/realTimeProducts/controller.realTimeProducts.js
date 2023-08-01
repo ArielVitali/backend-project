@@ -1,10 +1,9 @@
 import { Router } from "express";
-import ProductManager from "../class/ProductManager.js";
-import __dirname from "../Utils.js";
+import ProductDao from "../dao/Product.dao.js";
 
 const controllerRealTimeProducts = Router();
-const path = __dirname + "/files/products.json";
-const productManager = new ProductManager(path);
+//const path = __dirname + "/files/products.json";
+const productManager = new ProductDao();
 
 controllerRealTimeProducts.get("/", async (req, res) => {
   const products = await productManager.getProducts();

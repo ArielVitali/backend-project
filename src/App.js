@@ -3,10 +3,8 @@ import morgan from "morgan";
 import handlebars from "express-handlebars";
 import router from "./router/index.js";
 import __dirname from "./Utils.js";
-import { Server } from "socket.io";
 
 const app = express();
-const PORT = 8080;
 
 //MIDDLEWARES
 app.use(express.json());

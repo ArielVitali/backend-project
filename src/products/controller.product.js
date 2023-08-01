@@ -1,17 +1,18 @@
 import { Router } from "express";
-import ProductManager from "../class/ProductManager.js";
 import __dirname from "../Utils.js";
+import ProductDao from "../dao/Product.dao.js";
 
 const controllerProduct = Router();
-const path = __dirname + "/files/products.json";
-const productManager = new ProductManager(path);
+//const path = __dirname + "/files/products.json";
+const productManager = new ProductDao();
 
 //get products
 controllerProduct.get("/", async (req, res) => {
   try {
-    const products = await productManager.getProducts();
-    //res.json(products);
-    res.render("index.handlebars", { products });
+    const response = await productManager.getProducts();
+    const products = await productMaping(response);
+    //res.render("index.handlebars", { products });
+    res.json({ products });
   } catch (error) {
     console.log(error);
   }
@@ -21,8 +22,9 @@ controllerProduct.get("/", async (req, res) => {
 controllerProduct.get("/:pid", async (req, res) => {
   try {
     const pid = req.params.pid;
-    const product = await productManager.getProductById(parseInt(pid));
-    res.json(product);
+    const response = await productManager.getProductById(pid);
+    const product = await productMaping(response);
+    res.json({ product });
   } catch (error) {
     console.log(error);
   }
@@ -41,7 +43,7 @@ controllerProduct.post("/", async (req, res) => {
     thumbnails,
   } = req.body;
 
-  const result = await productManager.addProduct(
+  const productData = {
     title,
     description,
     code,
@@ -49,11 +51,16 @@ controllerProduct.post("/", async (req, res) => {
     status,
     stock,
     category,
-    thumbnails
-  );
+    thumbnails,
+  };
+
+  const response = await productManager.addProduct(productData);
+  const product = await productMaping(response);
+
+  //socketIO
   const products = await productManager.getProducts();
   global.io.emit("listOfproducts", products);
-  //console.log({ message: result });
+  res.json({ products });
 });
 
 //update product by id
@@ -69,8 +76,8 @@ controllerProduct.put("/:pid", async (req, res) => {
     category,
     thumbnails,
   } = req.query;
-  const result = await productManager.updateProduct(
-    parseInt(pid),
+
+  const productData = {
     title,
     description,
     code,
@@ -78,18 +85,53 @@ controllerProduct.put("/:pid", async (req, res) => {
     status,
     stock,
     category,
-    thumbnails
-  );
-  res.json({ message: result });
+    thumbnails,
+  };
+
+  const response = await productManager.updateProduct(pid, productData);
+  const product = await productMaping(response);
+  res.json({ product });
 });
 
 //delete product by id
 controllerProduct.delete("/:pid", async (req, res) => {
   const pid = req.params.pid;
-  const deletedProduct = await productManager.deleteProduct(parseInt(pid));
+  const response = await productManager.deleteProduct(pid);
+  const deletedProduct = await productMaping(response);
+
+  //socketIO
   const products = await productManager.getProducts();
   global.io.emit("listOfproducts", products);
+
   res.json({ deletedProduct, message: `Product deleted succesfully!` });
 });
+
+const productMaping = async (response) => {
+  if (Array.isArray(response)) {
+    return response.map((product) => ({
+      id: product._id,
+      title: product.title,
+      description: product.description,
+      code: product.code,
+      price: product.price,
+      status: product.status,
+      stock: product.stock,
+      category: product.category,
+      thumbnails: product.thumbnails,
+    }));
+  } else {
+    return {
+      id: response._id,
+      title: response.title,
+      description: response.description,
+      code: response.code,
+      price: response.price,
+      status: response.status,
+      stock: response.stock,
+      category: response.category,
+      thumbnails: response.thumbnails,
+    };
+  }
+};
 
 export default controllerProduct;

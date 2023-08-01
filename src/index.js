@@ -1,5 +1,7 @@
 import app from "./App.js";
 import { Server } from "socket.io";
+import mongoDBconnect from "./db/mongoDB.js";
+
 const PORT = 8080;
 const messages = [];
 
@@ -22,3 +24,5 @@ io.on("connection", (socket) => {
     io.emit("messageForChat", data);
   });
 });
+
+await mongoDBconnect();
