@@ -48,5 +48,18 @@
 		"stock": 24,
 		"category": "Outdoors",
 		"thumbnails": []
+	},
+	{
+		"id": 6,
+		"title": "producto 99999",
+		"description": "bbbbbbbb",
+		"code": "abc123",
+		"price": 200,
+		"status": false,
+		"stock": 24,
+		"category": "Outdoors",
+		"thumbnails": [
+			"ruta"
+		]
 	}
 ]
