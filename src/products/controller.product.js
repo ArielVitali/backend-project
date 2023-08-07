@@ -9,10 +9,61 @@ const productManager = new ProductDao();
 //get products
 controllerProduct.get("/", async (req, res) => {
   try {
-    const response = await productManager.getProducts();
-    const products = await productMaping(response);
+    const { limit, page, query, sort, category, stock } = req.query;
+    const response = await productManager.getProducts(
+      limit,
+      page,
+      query,
+      sort,
+      category,
+      stock
+    );
+
+    //const products = await productMaping(response);
     //res.render("index.handlebars", { products });
-    res.json({ products });
+    //res.json({ products });
+
+    let prevLink = null;
+    let nextLink = null;
+    let linkMold = req.protocol + "://" + req.get("host") + "/api/products/";
+
+    if (response.hasPrevPage) {
+      prevLink =
+        req.protocol +
+        "://" +
+        req.get("host") +
+        "/api/products" +
+        "?" +
+        `page=${response.prevPage}` +
+        `&limit=${limit}&sort=${sort}`;
+    }
+    if (response.hasNextPage) {
+      nextLink =
+        req.protocol +
+        "://" +
+        req.get("host") +
+        "/api/products" +
+        "?" +
+        `page=${response.nextPage}` +
+        `&limit=${limit}&sort=${sort}`;
+    }
+
+    const mappedResponse = {
+      status: "success",
+      payload: response.docs,
+      totalPages: response.totalPages,
+      prevPage: response.prevPage,
+      nextPage: response.nextPage,
+      page: response.page,
+      hasPrevPage: response.hasPrevPage,
+      hasNextPage: response.hasNextPage,
+      prevLink: prevLink,
+      nextLink: nextLink,
+      linkMold: linkMold,
+    };
+
+    res.status(200).render("products.handlebars", { mappedResponse });
+    //res.status(200).send(mappedResponse);
   } catch (error) {
     console.log(error);
   }
@@ -55,7 +106,7 @@ controllerProduct.post("/", async (req, res) => {
   };
 
   const response = await productManager.addProduct(productData);
-  const product = await productMaping(response);
+  //const product = await productMaping(response);
 
   //socketIO
   const products = await productManager.getProducts();
@@ -89,8 +140,8 @@ controllerProduct.put("/:pid", async (req, res) => {
   };
 
   const response = await productManager.updateProduct(pid, productData);
-  const product = await productMaping(response);
-  res.json({ product });
+  //const product = await productMaping(response);
+  res.send(response);
 });
 
 //delete product by id

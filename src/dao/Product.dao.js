@@ -12,9 +12,47 @@ class ProductDao {
   }
 
   /* get all products */
-  async getProducts() {
+  async getProducts(limit = 10, page = 1, query, sort, category, stock) {
     try {
-      const response = await productModel.find();
+      const options = {
+        limit: parseInt(limit, 10),
+        page: parseInt(page, 10),
+      };
+
+      //sort setting
+      if (sort) {
+        const sortOrder = sort.toLowerCase() === "asc" ? 1 : -1;
+        options.sort = { price: sortOrder };
+      }
+
+      //query setting
+      if (query) {
+        const queryParts = query.split(":"); // Split the query at ":" to get field and value
+        if (queryParts.length === 2) {
+          const field = queryParts[0].trim();
+          const value = queryParts[1].trim();
+
+          const queryRegex = new RegExp(value, "i"); // Use regex with 'i' for case-insensitive matching
+          query = {
+            [field]: queryRegex,
+          };
+        }
+      }
+
+      // category setting
+      if (category) {
+        const categoryRegex = new RegExp(category, "i");
+        query.category = categoryRegex;
+      }
+
+      // stock setting
+      if (stock) {
+        const stockValue = parseInt(stock, 10);
+        query.stock = { $gte: stockValue };
+      }
+
+      // Perform the pagination using mongoose-paginate-v2
+      const response = await productModel.paginate(query, options);
       return response;
     } catch (error) {
       return error;
@@ -34,10 +72,12 @@ class ProductDao {
   /* update product */
   async updateProduct(id, productData) {
     try {
+      console.log(id, productData);
       const response = await productModel.updateOne(
         { _id: id },
         { $set: productData }
       );
+      console.log(response);
       return response;
     } catch (error) {
       return error;

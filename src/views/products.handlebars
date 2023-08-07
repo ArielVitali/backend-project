@@ -1,0 +1,20 @@
+<div id="products">
+    <header>
+        <button><a href={{mappedResponse.prevLink}}>prevLink</a></button>
+        <button><a href={{mappedResponse.nextLink}}>nextLink</a></button>
+    </header>
+
+    
+   <div class="lista">
+        {{#each mappedResponse.payload}}
+            <div class="user-info">
+                <span id="userInfo">
+                <h2>{{this.title}}</h2>
+                <p>price: {{this.price}}</p>
+                <button>Add to card</button>
+                </span>
+            </div>
+        {{/each}}
+    </div>
+
+</div>

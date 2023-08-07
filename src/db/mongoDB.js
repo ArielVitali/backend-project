@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
-const uri =
-  "mongodb+srv://admin:admin@ecommerce.vyfth9f.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://admin:admin@ecommerce.vyfth9f.mongodb.net/ecommerce";
 
 const mongoDBconnect = async () => {
   try {
