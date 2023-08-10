@@ -16,8 +16,9 @@ controllerCart.post("/", async (req, res) => {
 //get products from cart id
 controllerCart.get("/:cid", async (req, res) => {
   const cid = req.params.cid;
-  const cart = await cartManager.getCartById(cid);
-  //res.json(cart);
+  const response = await cartManager.getCartById(cid);
+  const cart = cartMapping(response);
+  console.log(cart);
   res.status(200).render("cart.handlebars", cart);
 });
 
@@ -65,7 +66,17 @@ controllerCart.delete("/:cid", async (req, res) => {
   const cid = req.params.cid;
 
   const response = await cartManager.deleteProducts(cid);
-  res.json(response);
+  res.json({ response });
 });
+
+const cartMapping = (response) => {
+  return {
+    id: response._id,
+    products: response.products.map((productEntry) => ({
+      title: productEntry.product.title,
+      quantity: productEntry.quantity,
+    })),
+  };
+};
 
 export default controllerCart;

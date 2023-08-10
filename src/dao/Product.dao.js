@@ -12,7 +12,7 @@ class ProductDao {
   }
 
   /* get all products */
-  async getProducts(limit = 10, page = 1, query, sort, category, stock) {
+  async getProducts(limit, page, query, sort, category, stock) {
     try {
       const options = {
         limit: parseInt(limit, 10),

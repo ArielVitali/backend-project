@@ -9,7 +9,14 @@ const productManager = new ProductDao();
 //get products
 controllerProduct.get("/", async (req, res) => {
   try {
-    const { limit, page, query, sort, category, stock } = req.query;
+    const {
+      limit = 10,
+      page = 1,
+      query,
+      sort = "asc",
+      category,
+      stock,
+    } = req.query;
     const response = await productManager.getProducts(
       limit,
       page,
@@ -62,8 +69,8 @@ controllerProduct.get("/", async (req, res) => {
       linkMold: linkMold,
     };
 
-    res.status(200).render("products.handlebars", { mappedResponse });
-    //res.status(200).send(mappedResponse);
+    const products = await productMaping(mappedResponse.payload);
+    res.render("products.handlebars", { products, mappedResponse });
   } catch (error) {
     console.log(error);
   }
