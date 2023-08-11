@@ -25,6 +25,7 @@ controllerProduct.get("/", async (req, res) => {
       category,
       stock
     );
+    const { user } = req.session;
 
     //const products = await productMaping(response);
     //res.render("index.handlebars", { products });
@@ -70,7 +71,7 @@ controllerProduct.get("/", async (req, res) => {
     };
 
     const products = await productMaping(mappedResponse.payload);
-    res.render("products.handlebars", { products, mappedResponse });
+    res.render("products.handlebars", { products, mappedResponse, user });
   } catch (error) {
     console.log(error);
   }
