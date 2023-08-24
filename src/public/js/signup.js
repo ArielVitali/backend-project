@@ -7,8 +7,7 @@ form.addEventListener("submit", (e) => {
   const obj = {};
 
   data.forEach((value, key) => (obj[key] = value));
-
-  console.log(data);
+  console.log(obj);
 
   fetch("/api/users", {
     "Content-Type": "application/json",
