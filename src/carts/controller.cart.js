@@ -16,7 +16,7 @@ controllerCart.post("/", async (req, res) => {
 //get products from cart id
 controllerCart.get("/:cid", async (req, res) => {
   const cid = req.params.cid;
-  const cart = await cartManager.getCartById(parseInt(cid));
+  const cart = await cartManager.getCartById(cid);
   res.json(cart);
 });
 
@@ -26,11 +26,7 @@ controllerCart.post("/:cid/product/:pid", async (req, res) => {
   const pid = req.params.pid;
   const { quantity } = req.body;
 
-  const result = await cartManager.addProductToCart(
-    parseInt(cid),
-    parseInt(pid),
-    parseInt(quantity)
-  );
+  const result = await cartManager.addProductToCart(cid, pid, quantity);
   res.json(result);
 });
 

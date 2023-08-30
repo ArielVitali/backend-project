@@ -15,6 +15,7 @@ class CartDao {
   async getCartById(id) {
     try {
       const response = await cartModel.findById(id);
+      console.log(response);
       return response;
     } catch (error) {
       return error;
