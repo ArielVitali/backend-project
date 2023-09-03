@@ -3,7 +3,6 @@ import __dirname from "../Utils.js";
 import ProductDao from "../dao/Product.dao.js";
 
 const controllerProduct = Router();
-//const path = __dirname + "/files/products.json";
 const productManager = new ProductDao();
 
 //get products
@@ -11,8 +10,7 @@ controllerProduct.get("/", async (req, res) => {
   try {
     const response = await productManager.getProducts();
     const products = await productMaping(response);
-    //res.render("index.handlebars", { products });
-    res.json({ products });
+    res.render("index.handlebars", { products });
   } catch (error) {
     console.log(error);
   }
@@ -32,78 +30,105 @@ controllerProduct.get("/:pid", async (req, res) => {
 
 //add product
 controllerProduct.post("/", async (req, res) => {
-  const {
-    title,
-    description,
-    code,
-    price,
-    status,
-    stock,
-    category,
-    thumbnails,
-  } = req.body;
+  try {
+    const {
+      title,
+      description,
+      code,
+      price,
+      status,
+      stock,
+      category,
+      thumbnails,
+    } = req.body;
 
-  const productData = {
-    title,
-    description,
-    code,
-    price,
-    status,
-    stock,
-    category,
-    thumbnails,
-  };
+    if (!title || !price) {
+      return res
+        .status(400)
+        .json({ error: "Title and price are required fields." });
+    }
 
-  const response = await productManager.addProduct(productData);
-  const product = await productMaping(response);
+    const productData = {
+      title,
+      description,
+      code,
+      price,
+      status,
+      stock,
+      category,
+      thumbnails,
+    };
 
-  //socketIO
-  const products = await productManager.getProducts();
-  global.io.emit("listOfproducts", products);
-  res.json({ products });
+    await productManager.addProduct(productData);
+
+    //socketIO
+    const products = await productManager.getProducts();
+    global.io.emit("listOfproducts", products);
+
+    res.json({ products });
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: controller.product.js:64 ~ controllerProduct.post ~ error:",
+      error
+    );
+  }
 });
 
 //update product by id
 controllerProduct.put("/:pid", async (req, res) => {
-  const pid = req.params.pid;
-  const {
-    title,
-    description,
-    code,
-    price,
-    status,
-    stock,
-    category,
-    thumbnails,
-  } = req.query;
+  try {
+    const pid = req.params.pid;
+    const {
+      title,
+      description,
+      code,
+      price,
+      status,
+      stock,
+      category,
+      thumbnails,
+    } = req.query;
 
-  const productData = {
-    title,
-    description,
-    code,
-    price,
-    status,
-    stock,
-    category,
-    thumbnails,
-  };
+    const productData = {
+      title,
+      description,
+      code,
+      price,
+      status,
+      stock,
+      category,
+      thumbnails,
+    };
 
-  const response = await productManager.updateProduct(pid, productData);
-  const product = await productMaping(response);
-  res.json({ product });
+    const response = await productManager.updateProduct(pid, productData);
+    const product = await productMaping(response);
+    res.json({ product });
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: controller.product.js:101 ~ controllerProduct.put ~ error:",
+      error
+    );
+  }
 });
 
 //delete product by id
 controllerProduct.delete("/:pid", async (req, res) => {
-  const pid = req.params.pid;
-  const response = await productManager.deleteProduct(pid);
-  const deletedProduct = await productMaping(response);
+  try {
+    const pid = req.params.pid;
+    const response = await productManager.deleteProduct(pid);
+    const deletedProduct = await productMaping(response);
 
-  //socketIO
-  const products = await productManager.getProducts();
-  global.io.emit("listOfproducts", products);
+    //socketIO
+    const products = await productManager.getProducts();
+    global.io.emit("listOfproducts", products);
 
-  res.json({ deletedProduct, message: `Product deleted succesfully!` });
+    res.json({ deletedProduct, message: `Product deleted succesfully!` });
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: controller.product.js:121 ~ controllerProduct.delete ~ error:",
+      error
+    );
+  }
 });
 
 const productMaping = async (response) => {

@@ -5,10 +5,10 @@ const productCollection = "products";
 
 /* schema */
 const productSchema = new mongoose.Schema({
-  title: String,
+  title: { type: String, required: true },
   description: String,
   code: String,
-  price: Number,
+  price: { type: Number, required: true },
   status: Boolean,
   stock: Number,
   category: String,

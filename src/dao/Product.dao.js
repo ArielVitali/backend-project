@@ -14,7 +14,7 @@ class ProductDao {
   /* get all products */
   async getProducts() {
     try {
-      const response = await productModel.find();
+      const response = await productModel.find().lean();
       return response;
     } catch (error) {
       return error;
