@@ -28,27 +28,12 @@ deleteBtn.addEventListener("click", (e) => {
 addProductBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
-  // Retrieve form field values
   const title = document.getElementById("title").value;
   const price = document.getElementById("price").value;
-  /*
-  const description = document.getElementById("description").value;
-  const code = document.getElementById("code").value;
-  const status = document.getElementById("status").value;
-  const stock = document.getElementById("stock").value;
-  const category = document.getElementById("category").value;
-  const thumbnail = document.getElementById("thumbnail").value;
-  */
 
   const productData = {
     title,
-    //description,
-    //code,
     price,
-    //status,
-    //stock,
-    //category,
-    //thumbnail,
   };
 
   fetch("/api/products", {
@@ -61,28 +46,18 @@ addProductBtn.addEventListener("click", (e) => {
     .then((response) => response.json())
     .then((data) => {
       console.log("Product added successfully:", data);
-      // Do something with the response data if needed
-
-      // Clear the form fields after successful submission
       document.getElementById("title").value = "";
-      document.getElementById("description").value = "";
       document.getElementById("price").value = "";
-      document.getElementById("thumbnail").value = "";
-      document.getElementById("code").value = "";
-      document.getElementById("stock").value = "";
-      document.getElementById("status").value = "";
-      document.getElementById("category").value = "";
     })
     .catch((error) => {
       console.error("Error adding product:", error);
-      // Handle any errors that occurred during the request
     });
 });
 
 socket.on("listOfproducts", (data) => {
   // Initial table setup with header row
   liveProducts.innerHTML = `
-    <table>
+    <table style="margin: 20px; padding:20px;">
       <thead>
         <tr>
           <td>Nombre</td>
@@ -102,7 +77,7 @@ socket.on("listOfproducts", (data) => {
                 <p>${product.price}</p>
               </td>
               <td>
-                <p>${product.id}</p>
+                <p>${product._id}</p>
               </td>
             </tr>
           `
