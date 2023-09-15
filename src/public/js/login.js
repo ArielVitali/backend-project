@@ -8,12 +8,19 @@ form.addEventListener("submit", (e) => {
 
   data.forEach((value, key) => (obj[key] = value));
 
-  fetch("/auth", {
+  const url = "/auth";
+  const headers = {
     "Content-Type": "application/json",
-    method: "POST",
-    body: JSON.stringify(obj),
+  };
+  const method = "POST";
+  const body = JSON.stringify(obj);
+
+  fetch(url, {
+    headers,
+    method,
+    body,
   })
-    .then((res) => res.json())
+    .then((response) => response.json())
     .then((data) => console.log(data))
     .catch((err) => console.log(err));
 });

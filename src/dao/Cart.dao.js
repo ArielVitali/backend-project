@@ -45,14 +45,13 @@ class CartDao {
   }
 
   /* updates cart product list */
-  async updateCartProductList(cid, products) {
+  async updateCartProductList(cid, newProducts) {
     try {
       const cart = await cartModel.findById(cid);
       if (cart) {
-        //deberia checkear que la estructura de products es correcta
-        //mirar grabacion 4:52:12
-        cart.products = products;
-        cart.save();
+        cart.products = newProducts;
+        await cart.save();
+        return cart;
       }
     } catch (error) {
       return error;
@@ -71,6 +70,7 @@ class CartDao {
           product.quantity = quantity;
         }
         cart.save();
+        return cart;
       }
     } catch (error) {
       return error;
@@ -81,9 +81,13 @@ class CartDao {
   async deleteProduct(cid, pid) {
     try {
       const cart = await cartModel.findById(cid);
+
       if (cart) {
-        cart.products.findByIdAndDelete(pid);
-        cart.save();
+        cart.products = cart.products.filter(
+          (product) => product.product.toString() !== pid
+        );
+        await cart.save();
+        return cart;
       }
     } catch (error) {
       return error;
@@ -97,6 +101,7 @@ class CartDao {
       if (cart) {
         cart.products = [];
         cart.save();
+        return cart;
       }
     } catch (error) {
       return error;

@@ -1,4 +1,4 @@
-const form = document.getElementById("formSignup");
+const form = document.getElementById("forgotPasswordForm");
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -7,13 +7,12 @@ form.addEventListener("submit", (e) => {
   const obj = {};
 
   data.forEach((value, key) => (obj[key] = value));
-  console.log(obj);
 
-  const url = "/api/users";
+  const url = "/auth/forgotPassword";
   const headers = {
     "Content-Type": "application/json",
   };
-  const method = "POST";
+  const method = "PATCH";
   const body = JSON.stringify(obj);
 
   fetch(url, {
@@ -23,5 +22,5 @@ form.addEventListener("submit", (e) => {
   })
     .then((response) => response.json())
     .then((data) => console.log(data))
-    .catch((err) => console.log(err));
+    .catch((error) => console.log(error));
 });

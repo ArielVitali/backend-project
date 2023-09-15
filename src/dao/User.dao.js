@@ -16,7 +16,19 @@ class UserDao {
     try {
       const response = await userModel.findOne({ email });
       return response;
-    } catch (error) {}
+    } catch (error) {
+      return error;
+    }
+  }
+
+  //patch user creds
+  async patchUserPassword(email, password) {
+    try {
+      const response = await userModel.updateOne({ email }, { password });
+      return response;
+    } catch (error) {
+      return error;
+    }
   }
 }
 
