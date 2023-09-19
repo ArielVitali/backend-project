@@ -1,39 +1,59 @@
 import { Router } from "express";
 import UserDao from "../dao/User.dao.js";
 import cryptPassword from "../Utils/bcrypt/cryptPassword.js";
+import passport from "passport";
 
 const router = Router();
 const userManager = new UserDao();
 
 //login auth
-router.post("/", async (req, res) => {
-  try {
-    const { email, password } = req.body;
+router.post(
+  "/",
+  passport.authenticate("login", { failureRedirect: "/failLogin" }),
+  async (req, res) => {
+    try {
+      console.log(req.user);
+      if (!req.user) return res.status(400).json({ error: "Creds invalidas" });
 
-    const user = await userManager.getUserByEmail(email);
+      req.session.user = {
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        age: req.user.age,
+        email: req.user.email,
+      };
 
-    if (!user) {
-      return res.status(400).json({ error: "El user y password no coinciden" });
+      res.send({ message: req.user });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Internal server error" });
     }
-
-    const isValidPassword = cryptPassword.isValidPasswordMethod(password, user);
-
-    if (!isValidPassword) {
-      return res.status(400).json({ error: "El user y password no coinciden" });
-    }
-
-    req.session.user = {
-      first_name: user.first_name,
-      last_name: user.last_name,
-      email: user.email,
-    };
-
-    res.json({ message: "Sesion iniciada" });
-    //res.redirect("/"); intentar redirigir a products pero no funciono. Me tira un error.
-  } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
   }
+);
+
+router.get("/failLogin", (req, res) => {
+  res.json({ error: "fallo el login" });
 });
+
+router.get(
+  "/github",
+  passport.authenticate("github", { scope: ["user:email"] }),
+  async (req, res) => {
+    //en el caso de que todo vaya bien se redirige a la githubcallback
+  }
+);
+
+router.get(
+  "/githubcallback",
+  passport.authenticate("github"),
+  async (req, res) => {
+    try {
+      req.session.user = req.user;
+      res.redirect("/");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 
 //logout auth
 router.get("/logout", (req, res) => {
@@ -43,7 +63,7 @@ router.get("/logout", (req, res) => {
   res.redirect("/login");
 });
 
-//forgot pass auth
+//forgot pass auth | HACER UNA STRATEGY PARA ESTO
 router.patch("/forgotPassword", async (req, res) => {
   try {
     const { email, password } = req.body;

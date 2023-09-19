@@ -5,6 +5,8 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import router from "./router/index.js";
 import __dirname from "./Utils.js";
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
 
 const app = express();
 
@@ -27,6 +29,9 @@ app.use(
     saveUninitialized: false,
   })
 );
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 router(app);
 

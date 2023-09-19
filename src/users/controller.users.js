@@ -1,34 +1,27 @@
 import { Router } from "express";
-import UserDao from "../dao/User.dao.js";
-import cryptPassword from "../Utils/bcrypt/cryptPassword.js";
+import passport from "passport";
 
 const router = Router();
-const userManager = new UserDao();
 
 //signup of new user
-router.post("/", async (req, res) => {
-  try {
-    const { first_name, last_name, age, email, password } = req.body;
-
-    const passwordHashed = cryptPassword.createHash(password);
-
-    const newUserInfo = {
-      first_name,
-      last_name,
-      age,
-      email,
-      password: passwordHashed,
-    };
-
-    if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
-      newUserInfo.role = "admin";
+router.post(
+  "/",
+  passport.authenticate("register", { failureRedirect: "/failRegister" }),
+  async (req, res) => {
+    try {
+      res.send({ message: "User registrado" });
+    } catch (error) {
+      //si no manejo este error se cae el server
+      if (error.code === 11000)
+        return res.status(400).json({ error: "El usuario ya existe" });
+      res.status(500).json({ error: "Internal server error." });
     }
-
-    const newUser = await userManager.addUser(newUserInfo);
-    res.json(newUser);
-  } catch (error) {
-    console.log(error);
   }
+);
+
+router.get("/failRegister", async (req, res) => {
+  console.log("Fallo el registro");
+  res.send("Fallo el registro");
 });
 
 export default router;
