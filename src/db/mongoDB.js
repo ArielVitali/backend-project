@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
+import { dbConfig } from "../config/db.config.js";
 
-const uri = "mongodb+srv://admin:admin@ecommerce.vyfth9f.mongodb.net/ecommerce";
+const { dbUser, dbPassword, dbHost, dbName } = dbConfig;
+
+const uri = `mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/${dbName}`;
 
 const mongoDBconnect = async () => {
   try {

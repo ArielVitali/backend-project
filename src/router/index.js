@@ -1,9 +1,9 @@
-import controllerProduct from "../products/controller.product.js";
-import controllerCart from "../carts/controller.cart.js";
-import controllerRealTimeProducts from "../realTimeProducts/controller.realTimeProducts.js";
-import viewsController from "../authViews/controller.viewsController.js";
-import authController from "../auth/controller.auth.js";
-import usersController from "../users/controller.users.js";
+import controllerProduct from "../controllers/products.controller.js";
+import controllerCart from "../controllers/carts.controller.js";
+import controllerRealTimeProducts from "../controllers/realTimeProducts.controller.js";
+import viewsController from "../controllers/views.controller.js";
+import authController from "../controllers/auth.controller.js";
+import usersController from "../controllers/users.controller.js";
 
 const router = (app) => {
   app.use("/api/products", controllerProduct);

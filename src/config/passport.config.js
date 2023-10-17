@@ -4,8 +4,7 @@ import passport from "passport";
 import local from "passport-local";
 import github from "passport-github2";
 import { githubConfig } from "./github.config.js";
-
-const userManager = new UserDao();
+import userService from "../services/users.service.js";
 
 const LocalStrategy = local.Strategy;
 const GithubStrategy = github.Strategy;
@@ -16,26 +15,15 @@ const initializePassport = () => {
     new LocalStrategy(
       { passReqToCallback: true, usernameField: "email" },
       async (req, username, password, done) => {
-        const { first_name, last_name, email, age } = req.body;
         try {
-          const user = await userManager.getUserByEmail(username);
+          const user = await userService.getUserByEmail(username);
 
           if (user) {
             console.log("User already exists", user);
             return done(null, false);
           }
 
-          const hashedPassword = await cryptPassword.createHash(password);
-
-          const newUserInfo = {
-            first_name,
-            last_name,
-            email,
-            age,
-            password: hashedPassword,
-          };
-
-          const newUser = await userManager.addUser(newUserInfo);
+          const newUser = await userService.addUser(req.body, password);
           return done(null, newUser);
         } catch (error) {
           return done(error);
@@ -59,7 +47,7 @@ const initializePassport = () => {
       { usernameField: "email" },
       async (username, password, done) => {
         try {
-          const user = await userManager.getUserByEmail(username);
+          const user = await userService.getUserByEmail(username);
 
           if (!user) {
             console.log("User no existe");
@@ -89,7 +77,7 @@ const initializePassport = () => {
       async (accessToken, refreshToken, profile, done) => {
         try {
           console.log(profile);
-          const user = await userManager.getUserByEmail(profile._json.email);
+          const user = await userService.getUserByEmail(profile._json.email);
           if (!user) {
             const newUserInfo = {
               first_name: profile._json.name,
@@ -101,7 +89,7 @@ const initializePassport = () => {
               //esto se soluciona haciendo un array "profiles: [github, local]".
             };
 
-            const newUser = await userManager.addUser(newUserInfo);
+            const newUser = await userService.addUser(newUserInfo);
 
             return done(null, newUser);
           }

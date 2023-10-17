@@ -1,10 +1,8 @@
 import { Router } from "express";
-import UserDao from "../dao/User.dao.js";
-import cryptPassword from "../Utils/bcrypt/cryptPassword.js";
+import userService from "../services/users.service.js";
 import passport from "passport";
 
 const router = Router();
-const userManager = new UserDao();
 
 //login auth
 router.post(
@@ -66,11 +64,7 @@ router.get("/logout", (req, res) => {
 //forgot pass auth | HACER UNA STRATEGY PARA ESTO
 router.patch("/forgotPassword", async (req, res) => {
   try {
-    const { email, password } = req.body;
-
-    const passwordHashed = cryptPassword.createHash(password);
-
-    await userManager.patchUserPassword(email, passwordHashed);
+    await userService.patchUserPassword(req.body);
 
     res.json({ message: "contrasena actualizada" });
   } catch (error) {
