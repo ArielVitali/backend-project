@@ -1,19 +1,18 @@
-import ProductDao from "../dao/Product.dao.js";
-
-const Products = new ProductDao();
+import repositories from "../repositories/index.js";
+const { ProductsRepository } = repositories;
 
 const addProduct = async (productData) => {
   try {
-    const response = await Products.addProduct(productData);
+    const response = await ProductsRepository.addProduct(productData);
     return response;
   } catch (error) {
     return error;
   }
 };
 
-const getProducts = async (data) => {
+const getProducts = async (queryData) => {
   try {
-    const response = await Products.getProducts(data);
+    const response = await ProductsRepository.getProducts(queryData);
     return response;
   } catch (error) {
     return error;
@@ -22,7 +21,7 @@ const getProducts = async (data) => {
 
 const getProductById = async (id) => {
   try {
-    const response = await Products.getProductById(id);
+    const response = await ProductsRepository.getProductById(id);
     return response;
   } catch (error) {
     return error;
@@ -31,7 +30,7 @@ const getProductById = async (id) => {
 
 const updateProduct = async (pid, data) => {
   try {
-    const response = await Products.updateProduct(pid, data);
+    const response = await ProductsRepository.updateProduct(pid, data);
 
     return response;
   } catch (error) {
@@ -41,7 +40,7 @@ const updateProduct = async (pid, data) => {
 
 const deleteProduct = async (id) => {
   try {
-    const response = await Products.deleteProduct(id);
+    const response = await ProductsRepository.deleteProduct(id);
     return response;
   } catch (error) {
     return error;

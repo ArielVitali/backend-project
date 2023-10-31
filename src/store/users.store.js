@@ -1,10 +1,9 @@
-import UserDao from "../dao/User.dao.js";
-
-const Users = new UserDao();
+import repositories from "../repositories/index.js";
+const { UsersRepository } = repositories;
 
 const addUser = async (userData) => {
   try {
-    const response = await Users.addUser(userData);
+    const response = await UsersRepository.addUser(userData);
     return response;
   } catch (error) {
     return error;
@@ -13,7 +12,8 @@ const addUser = async (userData) => {
 
 const getUserByEmail = async (email) => {
   try {
-    const response = await Users.getUserByEmail(email);
+    console.log(UsersRepository);
+    const response = await UsersRepository.getUserByEmail(email);
 
     return response;
   } catch (error) {
@@ -21,9 +21,9 @@ const getUserByEmail = async (email) => {
   }
 };
 
-const getCartById = async (id) => {
+const getUserById = async (id) => {
   try {
-    const response = await Users.getUserById(id);
+    const response = await UsersRepository.getUserById(id);
     return response;
   } catch (error) {
     return error;
@@ -32,7 +32,7 @@ const getCartById = async (id) => {
 
 const patchUserPassword = async (email, password) => {
   try {
-    const response = await Users.patchUserPassword(email, password);
+    const response = await UsersRepository.patchUserPassword(email, password);
     return response;
   } catch (error) {
     return error;
@@ -42,6 +42,6 @@ const patchUserPassword = async (email, password) => {
 export default {
   addUser,
   getUserByEmail,
-  getCartById,
+  getUserById,
   patchUserPassword,
 };

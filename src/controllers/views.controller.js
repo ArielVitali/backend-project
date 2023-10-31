@@ -14,7 +14,6 @@ router.get("/login", publicAccess, (req, res) => {
 });
 
 router.get("/", privateAccess, (req, res) => {
-  const { user } = req.session;
   res.redirect("/api/products"); //hacer un redirect a products con los datos del usuario
 });
 

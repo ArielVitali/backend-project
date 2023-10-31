@@ -10,7 +10,6 @@ router.post(
   passport.authenticate("login", { failureRedirect: "/failLogin" }),
   async (req, res) => {
     try {
-      console.log(req.user);
       if (!req.user) return res.status(400).json({ error: "Creds invalidas" });
 
       req.session.user = {
@@ -20,7 +19,7 @@ router.post(
         email: req.user.email,
       };
 
-      res.send({ message: req.user });
+      res.send({ message: "Login successful" });
     } catch (error) {
       console.log(error);
       res.status(500).json({ error: "Internal server error" });

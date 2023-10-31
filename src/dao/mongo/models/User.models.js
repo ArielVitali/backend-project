@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import cartModel from "./Cart.models.js";
 
 /* collection name */
 const userCollection = "user";
@@ -18,6 +19,20 @@ const userSchema = new mongoose.Schema({
     enum: ["admin", "user"],
     default: "user",
   },
+  cart: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "cart",
+  },
+});
+
+userSchema.pre("save", async function (next) {
+  try {
+    const newCart = await cartModel.create({});
+    console.log(newCart);
+    this.cart = newCart._id;
+  } catch (error) {
+    next(error);
+  }
 });
 
 const userModel = mongoose.model(userCollection, userSchema);

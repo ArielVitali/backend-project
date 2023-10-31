@@ -1,10 +1,9 @@
-import CartDao from "../dao/Cart.dao.js";
-
-const Carts = new CartDao();
+import repositories from "../repositories/index.js";
+const { CartsRepository } = repositories;
 
 const createCart = async (products) => {
   try {
-    const response = await Carts.createCart(products);
+    const response = await CartsRepository.createCart(products);
     return response;
   } catch (error) {
     return error;
@@ -13,7 +12,7 @@ const createCart = async (products) => {
 
 const getCartById = async (id) => {
   try {
-    const response = await Carts.getCartById(id);
+    const response = await CartsRepository.getCartById(id);
     return response;
   } catch (error) {
     return error;
@@ -22,7 +21,7 @@ const getCartById = async (id) => {
 
 const addProductToCart = async (cid, pid, quantity) => {
   try {
-    const response = await Carts.addProductToCart(cid, pid, quantity);
+    const response = await CartsRepository.addProductToCart(cid, pid, quantity);
     return response;
   } catch (error) {
     return error;
@@ -31,7 +30,10 @@ const addProductToCart = async (cid, pid, quantity) => {
 
 const updateCartProductList = async (cid, newProducts) => {
   try {
-    const response = await Carts.updateCartProductList(cid, newProducts);
+    const response = await CartsRepository.updateCartProductList(
+      cid,
+      newProducts
+    );
     return response;
   } catch (error) {
     return error;
@@ -40,7 +42,11 @@ const updateCartProductList = async (cid, newProducts) => {
 
 const updateProductQuantity = async (cid, pid, quantity) => {
   try {
-    const response = await Carts.updateProductQuantity(cid, pid, quantity);
+    const response = await CartsRepository.updateProductQuantity(
+      cid,
+      pid,
+      quantity
+    );
   } catch (error) {
     return error;
   }
@@ -48,7 +54,7 @@ const updateProductQuantity = async (cid, pid, quantity) => {
 
 const deleteProduct = async (cid, pid) => {
   try {
-    const response = await Carts.deleteProduct(cid, pid);
+    const response = await CartsRepository.deleteProduct(cid, pid);
     return response;
   } catch (error) {
     return error;
@@ -57,7 +63,7 @@ const deleteProduct = async (cid, pid) => {
 
 const deleteProducts = async (cid) => {
   try {
-    const response = await Carts.deleteProducts(cid);
+    const response = await CartsRepository.deleteProducts(cid);
     return response;
   } catch (error) {
     return error;

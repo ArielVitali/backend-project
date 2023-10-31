@@ -21,6 +21,16 @@ form.addEventListener("submit", (e) => {
     body,
   })
     .then((response) => response.json())
-    .then((data) => console.log(data))
+    .then((data) => {
+      console.log(data);
+
+      if (data.message === "Login successful") {
+        // Reload the page upon successful login
+        location.reload();
+      } else {
+        // Handle login failure here
+        console.log("Login failed");
+      }
+    })
     .catch((err) => console.log(err));
 });

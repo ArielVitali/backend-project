@@ -1,6 +1,8 @@
 import cartModel from "./models/Cart.models.js";
 
-class CartDao {
+class CartDAO {
+  constructor() {}
+
   /* add new cart */
   async createCart(products) {
     try {
@@ -109,4 +111,4 @@ class CartDao {
   }
 }
 
-export default CartDao;
+export default CartDAO;

@@ -3,7 +3,7 @@ import __dirname from "../Utils.js";
 import productMaping from "../Utils/responseMapping/mongoPaginatedResponse.js";
 import middlewareModules from "../middleware/index.js";
 import productService from "../services/products.service.js";
-const { privateAccess } = middlewareModules;
+const { privateAccess, privateAdminAccess } = middlewareModules;
 
 const router = Router();
 
@@ -18,7 +18,6 @@ router.get("/", privateAccess, async (req, res) => {
       category,
       stock,
     } = req.query;
-
     const queryData = {
       limit,
       page,
@@ -27,11 +26,10 @@ router.get("/", privateAccess, async (req, res) => {
       category,
       stock,
     };
-
-    const response = await productService.getProducts(queryData);
+    const response = await productService.getProductsForHome(queryData, req);
+    const products = await productMaping(response.payload);
     const { user } = req.session;
 
-    const products = await productMaping(response.payload);
     res.render("products.handlebars", { products, response, user });
   } catch (error) {
     console.log(
@@ -53,7 +51,7 @@ router.get("/:pid", async (req, res) => {
 });
 
 //add product
-router.post("/", async (req, res) => {
+router.post("/", privateAdminAccess, async (req, res) => {
   try {
     await productService.addProduct(req.body);
 
@@ -70,7 +68,7 @@ router.post("/", async (req, res) => {
 });
 
 //update product by id
-router.put("/:pid", async (req, res) => {
+router.put("/:pid", privateAdminAccess, async (req, res) => {
   try {
     const response = await productService.updateProduct(
       req.params.pid,
@@ -86,7 +84,7 @@ router.put("/:pid", async (req, res) => {
 });
 
 //delete product by id
-router.delete("/:pid", async (req, res) => {
+router.delete("/:pid", privateAdminAccess, async (req, res) => {
   try {
     const response = await productService.deleteProduct(req.params.pid);
 

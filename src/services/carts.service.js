@@ -4,6 +4,7 @@ import cartMapping from "../Utils/responseMapping/cartMapping.js";
 const createCart = async (products) => {
   try {
     const response = await Store.createCart({ products });
+    console.log(response);
     return response;
   } catch (error) {
     return error;

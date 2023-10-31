@@ -1,5 +1,6 @@
 import Store from "../store/products.store.js";
 import productMaping from "../Utils/responseMapping/mongoPaginatedResponse.js";
+import ProductDTO from "../DTOs/Product.dto.js";
 
 const addProduct = async (data) => {
   try {
@@ -31,9 +32,9 @@ const addProduct = async (data) => {
   }
 };
 
-const getProducts = async (data) => {
+const getProductsForHome = async (queryData, req) => {
   try {
-    const response = await Store.getProducts(data);
+    const response = await Store.getProducts(queryData);
 
     let prevLink = null;
     let nextLink = null;
@@ -47,7 +48,7 @@ const getProducts = async (data) => {
         "/api/products" +
         "?" +
         `page=${response.prevPage}` +
-        `&limit=${limit}&sort=${sort}`;
+        `&limit=${queryData.limit}&sort=${queryData.sort}`;
     }
     if (response.hasNextPage) {
       nextLink =
@@ -57,7 +58,7 @@ const getProducts = async (data) => {
         "/api/products" +
         "?" +
         `page=${response.nextPage}` +
-        `&limit=${limit}&sort=${sort}`;
+        `&limit=${queryData.limit}&sort=${queryData.sort}`;
     }
 
     const mappedResponse = {
@@ -75,6 +76,15 @@ const getProducts = async (data) => {
     };
 
     return mappedResponse;
+  } catch (error) {
+    return error;
+  }
+};
+
+const getProducts = async (queryData) => {
+  try {
+    const response = await Store.getProducts(queryData);
+    return response;
   } catch (error) {
     return error;
   }
@@ -135,6 +145,7 @@ const deleteProduct = async (id) => {
 export default {
   addProduct,
   getProducts,
+  getProductsForHome,
   getProductById,
   updateProduct,
   deleteProduct,

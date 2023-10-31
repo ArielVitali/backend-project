@@ -111,4 +111,9 @@ router.delete("/:cid", async (req, res) => {
   }
 });
 
+router.get("/:cid/purchase", async (req, res) => {
+  try {
+  } catch (error) {}
+});
+
 export default router;

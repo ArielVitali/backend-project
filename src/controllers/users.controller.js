@@ -9,7 +9,7 @@ router.post(
   passport.authenticate("register", { failureRedirect: "/failRegister" }),
   async (req, res) => {
     try {
-      res.send({ message: "User registrado" });
+      res.send({ message: "Signup successfully" });
     } catch (error) {
       //si no manejo este error se cae el server
       if (error.code === 11000)

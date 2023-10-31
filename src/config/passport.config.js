@@ -1,4 +1,3 @@
-import UserDao from "../dao/User.dao.js";
 import cryptPassword from "../Utils/bcrypt/cryptPassword.js";
 import passport from "passport";
 import local from "passport-local";
@@ -24,6 +23,7 @@ const initializePassport = () => {
           }
 
           const newUser = await userService.addUser(req.body, password);
+          console.log("New user created", newUser);
           return done(null, newUser);
         } catch (error) {
           return done(error);
@@ -37,7 +37,7 @@ const initializePassport = () => {
   });
 
   passport.deserializeUser(async (id, done) => {
-    const user = await userManager.getUserById(id);
+    const user = await userService.getUserById(id);
     done(null, user);
   });
 
@@ -47,7 +47,9 @@ const initializePassport = () => {
       { usernameField: "email" },
       async (username, password, done) => {
         try {
+          console.log(username);
           const user = await userService.getUserByEmail(username);
+          console.log(user);
 
           if (!user) {
             console.log("User no existe");

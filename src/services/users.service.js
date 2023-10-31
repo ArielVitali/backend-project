@@ -1,5 +1,6 @@
 import Store from "../Store/users.Store.js";
 import cryptPassword from "../Utils/bcrypt/cryptPassword.js";
+import validateAdminUser from "../Utils/bcrypt/validate.js";
 
 const addUser = async (userData) => {
   try {
@@ -7,15 +8,28 @@ const addUser = async (userData) => {
 
     const hashedPassword = await cryptPassword.createHash(password);
 
-    const newUserInfo = {
-      first_name,
-      last_name,
-      email,
-      age,
-      password: hashedPassword,
+    const newUserInfo = async () => {
+      if (validateAdminUser(email)) {
+        return {
+          first_name,
+          last_name,
+          email,
+          age,
+          password: hashedPassword,
+          role: "admin",
+        };
+      } else {
+        return {
+          first_name,
+          last_name,
+          email,
+          age,
+          password: hashedPassword,
+        };
+      }
     };
 
-    const response = await Store.addUser(newUserInfo);
+    const response = await Store.addUser(await newUserInfo());
     return response;
   } catch (error) {
     return error;
@@ -25,14 +39,13 @@ const addUser = async (userData) => {
 const getUserByEmail = async (email) => {
   try {
     const response = await Store.getUserByEmail(email);
-
     return response;
   } catch (error) {
     return error;
   }
 };
 
-const getCartById = async (id) => {
+const getUserById = async (id) => {
   try {
     const response = await Store.getUserById(id);
     return response;
@@ -57,6 +70,6 @@ const patchUserPassword = async (data) => {
 export default {
   addUser,
   getUserByEmail,
-  getCartById,
+  getUserById,
   patchUserPassword,
 };

@@ -1,6 +1,8 @@
-import userModel from "../dao/models/User.models.js";
+import userModel from "./models/User.models.js";
 
-class UserDao {
+class UserDAO {
+  constructor() {}
+
   // add new user
   async addUser(userData) {
     try {
@@ -43,4 +45,4 @@ class UserDao {
   }
 }
 
-export default UserDao;
+export default UserDAO;
