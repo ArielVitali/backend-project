@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
-import uuid from "uuid";
+import { v1 } from "uuid";
 
 /* collection name */
 const ticketCollection = "tickets";
 
 /* schema */
 const ticketSchema = new mongoose.Schema({
-  code: { type: String, default: uuid.v1() },
+  code: { type: String, default: v1() },
   purchase_datetime: {
     type: Date,
     default: Date.now,

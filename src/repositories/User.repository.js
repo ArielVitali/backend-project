@@ -31,6 +31,15 @@ class UserRepository {
     }
   }
 
+  async getUserByCartID(id) {
+    try {
+      const response = await this.dao.getUserByCartID(id);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async patchUserPassword(email, password) {
     try {
       const response = await this.dao.patchUserPassword(email, password);

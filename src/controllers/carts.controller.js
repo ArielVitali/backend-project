@@ -21,7 +21,7 @@ router.post("/", privateAccess, async (req, res) => {
 //get products from cart id
 router.get("/:cid", async (req, res) => {
   try {
-    const response = await cartService.getCartById(req.params.cid);
+    const response = await cartService.getCartByIdMapped(req.params.cid);
 
     res.status(200).render("cart.handlebars", response);
   } catch (error) {
@@ -113,7 +113,12 @@ router.delete("/:cid", async (req, res) => {
 
 router.get("/:cid/purchase", async (req, res) => {
   try {
-  } catch (error) {}
+    const { cid } = req.params;
+    const response = await cartService.purchaseCart(cid);
+    res.json({ response });
+  } catch (error) {
+    throw error;
+  }
 });
 
 export default router;

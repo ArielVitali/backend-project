@@ -34,6 +34,15 @@ class UserDAO {
     }
   }
 
+  async getUserByCartID(id) {
+    try {
+      const response = await userModel.findOne({ cart: id });
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
+
   //patch user creds
   async patchUserPassword(email, password) {
     try {

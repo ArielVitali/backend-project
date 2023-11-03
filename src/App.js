@@ -7,6 +7,11 @@ import router from "./router/index.js";
 import __dirname from "./Utils.js";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
+import { dbConfig } from "./config/db.config.js";
+
+const { dbUser, dbPassword, dbHost, dbNameS } = dbConfig;
+
+const uri = `mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/${dbNameS}`;
 
 const app = express();
 
@@ -20,8 +25,7 @@ app.use(morgan("dev"));
 app.use(
   session({
     store: MongoStore.create({
-      mongoUrl:
-        "mongodb+srv://admin:admin@ecommerce.vyfth9f.mongodb.net/sessions?retryWrites=true&w=majority",
+      mongoUrl: uri,
       mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
     }),
     secret: "loqueQuier4",
