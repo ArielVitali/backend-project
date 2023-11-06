@@ -1,6 +1,6 @@
 import { Router } from "express";
 import productService from "../services/products.service.js";
-import middlewareModules from "../middleware/index.js";
+import middlewareModules from "../middleware/Access/index.js";
 import productMaping from "../Utils/responseMapping/mongoPaginatedResponse.js";
 const { privateAccess } = middlewareModules;
 

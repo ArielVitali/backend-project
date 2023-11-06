@@ -1,9 +1,14 @@
 import { Router } from "express";
 import __dirname from "../Utils.js";
 import productMaping from "../Utils/responseMapping/mongoPaginatedResponse.js";
-import middlewareModules from "../middleware/index.js";
+import middlewareModules from "../middleware/Access/index.js";
 import productService from "../services/products.service.js";
+import productMock from "../Utils/mocks/productMock.js";
+import productError from "../Utils/Errors/Product/product.error.js";
+import responses from "../Utils/Responses/index.js";
+
 const { privateAccess, privateAdminAccess } = middlewareModules;
+const { success, ServerError, ClientError } = responses;
 
 const router = Router();
 
@@ -32,10 +37,7 @@ router.get("/", privateAccess, async (req, res) => {
 
     res.render("products.handlebars", { products, response, user });
   } catch (error) {
-    console.log(
-      "🚀 ~ file: controller.product.js:76 ~ router.get ~ error:",
-      error
-    );
+    ServerError(res, error);
   }
 });
 
@@ -46,7 +48,7 @@ router.get("/:pid", async (req, res) => {
     const response = await productService.getProductById(pid);
     res.json({ response });
   } catch (error) {
-    console.log(error);
+    ServerError(res, error);
   }
 });
 
@@ -60,10 +62,8 @@ router.post("/", privateAdminAccess, async (req, res) => {
     global.io.emit("listOfproducts", products);
     res.json({ products });
   } catch (error) {
-    console.log(
-      "🚀 ~ file: controller.product.js:126 ~ router.post ~ error:",
-      error
-    );
+    ServerError(res, error);
+    return productError(req.body.pid, req.body);
   }
 });
 
@@ -76,10 +76,8 @@ router.put("/:pid", privateAdminAccess, async (req, res) => {
     );
     res.send(response);
   } catch (error) {
-    console.log(
-      "🚀 ~ file: controller.product.js:137 ~ router.put ~ error:",
-      error
-    );
+    ServerError(res, error);
+    return productError(req.body.pid, req.body);
   }
 });
 
@@ -93,10 +91,16 @@ router.delete("/:pid", privateAdminAccess, async (req, res) => {
 
     res.json({ response, message: `Product deleted succesfully!` });
   } catch (error) {
-    console.log(
-      "🚀 ~ file: controller.product.js:182 ~ router.delete ~ error:",
-      error
-    );
+    ServerError(res, error);
+  }
+});
+
+router.get("/mockingproducts", privateAccess, async (req, res) => {
+  try {
+    const mock = await productMock(10);
+    res.json({ mock: mock });
+  } catch (error) {
+    ServerError(res, error);
   }
 });
 

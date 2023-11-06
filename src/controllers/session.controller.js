@@ -1,5 +1,5 @@
 import { Router } from "express";
-import middlewareModules from "../middleware/index.js";
+import middlewareModules from "../middleware/Access/index.js";
 import sessionService from "../services/session.service.js";
 
 const { getUser } = sessionService;

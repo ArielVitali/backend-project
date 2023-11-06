@@ -1,7 +1,5 @@
 import { Server } from "socket.io";
-import middlewareModules from "../middleware/index.js";
 
-const { publicAccessOnlyUsers } = middlewareModules;
 const messages = [];
 
 const socketIO = (httpServer) => {

@@ -1,6 +1,9 @@
 import { Router } from "express";
 import cartService from "../services/carts.service.js";
-import middlewareModules from "../middleware/index.js";
+import middlewareModules from "../middleware/Access/index.js";
+import responses from "../Utils/Responses/index.js";
+
+const { success, ServerError, ClientError } = responses;
 const { privateAccess } = middlewareModules;
 
 const router = Router();
@@ -11,10 +14,7 @@ router.post("/", privateAccess, async (req, res) => {
     const response = await cartService.createCart(req.body);
     res.json({ response });
   } catch (error) {
-    console.log(
-      "🚀 ~ file: controller.cart.js:14 ~ router.post ~ error:",
-      error
-    );
+    ServerError(res, error);
   }
 });
 
@@ -25,10 +25,7 @@ router.get("/:cid", async (req, res) => {
 
     res.status(200).render("cart.handlebars", response);
   } catch (error) {
-    console.log(
-      "🚀 ~ file: controller.cart.js:30 ~ router.get ~ error:",
-      error
-    );
+    ServerError(res, error);
   }
 });
 
@@ -42,10 +39,7 @@ router.post("/:cid/product/:pid", async (req, res) => {
     );
     res.json({ response });
   } catch (error) {
-    console.log(
-      "🚀 ~ file: controller.cart.js:43 ~ router.post ~ error:",
-      error
-    );
+    ServerError(res, error);
   }
 });
 
@@ -58,10 +52,7 @@ router.put("/:cid", async (req, res) => {
     );
     res.json({ response });
   } catch (error) {
-    console.log(
-      "🚀 ~ file: controller.cart.js:64 ~ router.put ~ error:",
-      error
-    );
+    ServerError(res, error);
   }
 });
 
@@ -75,10 +66,7 @@ router.put("/:cid/products/:pid", async (req, res) => {
     );
     res.json({ response });
   } catch (error) {
-    console.log(
-      "🚀 ~ file: controller.cart.js:85 ~ router.put ~ error:",
-      error
-    );
+    ServerError(res, error);
   }
 });
 
@@ -91,10 +79,7 @@ router.delete("/:cid/products/:pid", async (req, res) => {
     );
     res.json({ response });
   } catch (error) {
-    console.log(
-      "🚀 ~ file: controller.cart.js:102 ~ router.delete ~ error:",
-      error
-    );
+    ServerError(res, error);
   }
 });
 
@@ -104,10 +89,7 @@ router.delete("/:cid", async (req, res) => {
     const response = await cartService.deleteProducts(req.params.cid);
     res.json({ response });
   } catch (error) {
-    console.log(
-      "🚀 ~ file: controller.cart.js:116 ~ router.delete ~ error:",
-      error
-    );
+    ServerError(res, error);
   }
 });
 
@@ -117,7 +99,7 @@ router.get("/:cid/purchase", async (req, res) => {
     const response = await cartService.purchaseCart(cid);
     res.json({ response });
   } catch (error) {
-    throw error;
+    ServerError(res, error);
   }
 });
 
