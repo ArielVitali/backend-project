@@ -8,6 +8,7 @@ import __dirname from "./Utils.js";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import { dbConfig } from "./config/db.config.js";
+import logger from "./middleware/Logger/logger.middleware.js";
 
 const { dbUser, dbPassword, dbHost, dbNameS } = dbConfig;
 
@@ -16,12 +17,14 @@ const uri = `mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/${dbNameS}`;
 const app = express();
 
 //MIDDLEWARES
+app.use(logger);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");
-app.use(morgan("dev"));
+// app.use(morgan("dev"));
+
 app.use(
   session({
     store: MongoStore.create({
