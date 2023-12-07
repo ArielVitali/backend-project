@@ -1,0 +1,32 @@
+const form = document.getElementById("loginForm");
+const productsLink = document.getElementById("productsLink");
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const data = new FormData(form);
+  const obj = {};
+
+  data.forEach((value, key) => (obj[key] = value));
+  //console.log(data)
+  const url = "/auth/passwordReset";
+  const headers = {
+    "Content-Type": "application/json",
+  };
+  const method = "POST";
+  const body = JSON.stringify(obj);
+
+  console.log(body);
+  console.log(url);
+  fetch(url, {
+    headers,
+    method,
+    body,
+  })
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((err) => console.log(err));
+  setTimeout(() => {
+    productsLink.click();
+  }, 1000);
+});

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
+import usersService from "../services/users.service.js";
 
 const router = Router();
 
@@ -18,6 +19,25 @@ router.post(
     }
   }
 );
+
+router.get("/premium/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const user = await usersService.getUserByEmail(email);
+    console.log(user.role);
+    if (user.role == "USER") {
+      await usersService.updateRole(email, "PREMIUM");
+      res.send({ message: "Usuario actualizado" });
+    } else if (user.role == "PREMIUM") {
+      await userBD.updateRole(email, "USER");
+      res.send({ message: "Usuario actualizado" });
+    } else {
+      res.send({ message: "Usuario No actualizado" });
+    }
+  } catch (error) {
+    res.send(`something went wrong ${error}`);
+  }
+});
 
 router.get("/failRegister", async (req, res) => {
   console.log("Fallo el registro");

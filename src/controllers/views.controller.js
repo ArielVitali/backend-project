@@ -56,4 +56,39 @@ router.get("/loggerTest/:tipo", (req, res) => {
   }
 });
 
+router.get("/waitting", (req, res) => {
+  try {
+    res.status(200).render("waitting.handlebars");
+  } catch (error) {
+    res.send(`something went wrong ${error}`);
+  }
+});
+
+router.get("/passwordForget", (req, res) => {
+  try {
+    res.status(200).render("passwordForget.handlebars");
+  } catch (error) {
+    res.send(`something went wrong ${error}`);
+  }
+});
+
+router.get("/passwordReset/:id", (req, res) => {
+  try {
+    const productId = req.params.id;
+    const currentTimestamp = new Date().getTime();
+
+    if (
+      req.session &&
+      req.session.expirationTime &&
+      currentTimestamp > req.session.expirationTime
+    ) {
+      res.status(200).redirect("/passwordForget");
+    } else {
+      res.status(200).render("passwordReset.handlebars");
+    }
+  } catch (error) {
+    res.send(`something went wrong ${error}`);
+  }
+});
+
 export default router;

@@ -54,7 +54,7 @@ const getUserById = async (id) => {
   }
 };
 
-const patchUserPassword = async (data) => {
+const updatePassword = async (data) => {
   try {
     const { email, password } = data;
 
@@ -67,9 +67,18 @@ const patchUserPassword = async (data) => {
   }
 };
 
+const updateRole = async (email, role) => {
+  try {
+    const response = await Store.patchUserRole(email, role);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
 export default {
   addUser,
   getUserByEmail,
   getUserById,
-  patchUserPassword,
+  updatePassword,
 };

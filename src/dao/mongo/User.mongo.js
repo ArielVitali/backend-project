@@ -44,12 +44,27 @@ class UserDAO {
   }
 
   //patch user creds
-  async patchUserPassword(email, password) {
+  async patchUserPassword(email, newPassword) {
     try {
-      const response = await userModel.updateOne({ email }, { password });
+      const response = await userModel.findOneAndUpdate(
+        { email },
+        { password: newPassword }
+      );
       return response;
     } catch (error) {
-      return error;
+      throw new Error(error);
+    }
+  }
+
+  async updateRole(email, newRole) {
+    try {
+      const response = await userModel.findOneAndUpdate(
+        { email },
+        { role: newRole }
+      );
+      return response;
+    } catch (error) {
+      throw new Error(error);
     }
   }
 }

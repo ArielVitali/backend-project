@@ -7,11 +7,11 @@ import usersController from "../controllers/users.controller.js";
 import sessionController from "../controllers/session.controller.js";
 
 const router = (app) => {
-  app.use("/api/products", controllerProduct);
-  app.use("/api/carts", controllerCart);
-  app.use("/realtimeproducts", controllerRealTimeProducts);
   app.use("/", viewsController);
   app.use("/auth", authController);
+  app.use("/realtimeproducts", controllerRealTimeProducts);
+  app.use("/api/products", controllerProduct);
+  app.use("/api/carts", controllerCart);
   app.use("/api/users", usersController);
   app.use("/api/sessions", sessionController);
 };

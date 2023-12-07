@@ -1,6 +1,8 @@
 import { Router } from "express";
 import userService from "../services/users.service.js";
 import passport from "passport";
+import nodemailerAdapter from "../Adapters/nodemailer.adapter.js";
+import cryptPassword from "../Utils/bcrypt/cryptPassword.js";
 
 const router = Router();
 
@@ -26,6 +28,53 @@ router.post(
     }
   }
 );
+
+router.post("/passwordReset", async (req, res) => {
+  try {
+    console.log("llego acaaaaaa");
+    const expirationTime = new Date().getTime() + 3600000;
+    let linkMold = req.protocol + "://" + req.get("host");
+    const url = linkMold + `/passwordReset/${expirationTime}`;
+    const email = { email: req.body.user };
+    req.session.destroy;
+    req.session.expirationTime = expirationTime;
+    req.session.email = email;
+    const mensaje = {
+      message: `<div> <h1>Hola!</h1> <h2>Este es el link para recuperar tu contreseña</h2> <h3> ${url}</h3> </div>`,
+      subject: "Recuperacion  de contraseña",
+    };
+    console.log("llego aca");
+    const emailSend = await nodemailerAdapter.sendEmail(email, mensaje);
+    console.log(emailSend);
+    res.json({ emailSend });
+  } catch (error) {
+    res.send(`something went wrong ${error}`);
+  }
+});
+
+router.post("/passwordUpdate", async (req, res) => {
+  try {
+    const pw1 = req.body.newPaswword1;
+    const pw2 = req.body.newPaswword2;
+    const email = req.session.email.email;
+    const user = await userService.getUserByEmail(email);
+    if (pw1 === pw2) {
+      if (cryptPassword.isValidPasswordMethod(pw1, user)) {
+        console.log("contraseña igual a la anterior");
+        res.json({
+          mesagge: "Contraseña igual a la anterior, usar una nueva.",
+        });
+      } else {
+        await userService.updatePassword(email, cryptPassword.createHash(pw1));
+        res.json({ mesagge: "Contraseña actualizada" });
+      }
+    } else {
+      res.json({ mesagge: "Contraseñas no coinciden." });
+    }
+  } catch (error) {
+    res.send(`something went wrong ${error}`);
+  }
+});
 
 router.get("/failLogin", (req, res) => {
   res.json({ error: "fallo el login" });
@@ -58,17 +107,6 @@ router.get("/logout", (req, res) => {
     if (error) return res.json({ error });
   });
   res.redirect("/login");
-});
-
-//forgot pass auth | HACER UNA STRATEGY PARA ESTO
-router.patch("/forgotPassword", async (req, res) => {
-  try {
-    await userService.patchUserPassword(req.body);
-
-    res.json({ message: "contrasena actualizada" });
-  } catch (error) {
-    console.log(error);
-  }
 });
 
 export default router;

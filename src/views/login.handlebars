@@ -1,22 +1,28 @@
 <h2>Login</h2>
 
 <form action="" id="formLogin">
-    <label for="">Usuario</label>
-    <input type="email" name="email">
-    <label for="">Password</label>
-    <input type="password" name="password">
-    <button type="submit">Iniciar Sesion</button>
+  <label for="">Usuario</label>
+  <input type="email" name="email" />
+  <label for="">Password</label>
+  <input type="password" name="password" />
+  <button type="submit">Iniciar Sesion</button>
 </form>
 
-<br>
+<br />
 <button>
-<a href="/auth/github">Entrar con Github</a>
+  <a href="/auth/github">Entrar con Github</a>
 </button>
-<br>
-<br>
-<a href="/forgotPassword">Forgot Password</a>
-<br>
-<br>
+<br />
+<br />
+<div>
+  <p>¿Olvidaste tu contraseña?
+    <button class="btn btn-dark"><a
+        class="text-decoration-none text-light"
+        href="/passwordForget"
+      > Recuperar </a></button></p>
+</div>
+<br />
+<br />
 <a href="/signup">Registrarme</a>
 
 <script src="/js/login.js"></script>

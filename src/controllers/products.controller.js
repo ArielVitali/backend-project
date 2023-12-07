@@ -7,7 +7,7 @@ import productMock from "../Utils/mocks/productMock.js";
 import productError from "../Utils/Errors/Product/product.error.js";
 import responses from "../Utils/Responses/index.js";
 
-const { privateAccess, privateAdminAccess } = middlewareModules;
+const { privateAccess, privateAdminAccess, premiumAccess } = middlewareModules;
 const { success, ServerError, ClientError } = responses;
 
 const router = Router();
@@ -82,7 +82,7 @@ router.put("/:pid", privateAdminAccess, async (req, res) => {
 });
 
 //delete product by id
-router.delete("/:pid", privateAdminAccess, async (req, res) => {
+router.delete("/:pid", premiumAccess, privateAdminAccess, async (req, res) => {
   try {
     const response = await productService.deleteProduct(req.params.pid);
 
